@@ -50,10 +50,13 @@ public class PageAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 title = "MAP VIEW";
+                return title;
             case 1:
-                title = "LIST VIEW";
+                title = "LIST RESTAURANT";
+                return title;
             case 2:
                 title = "WORK MATES";
+                return title;
 
             default:
                 return null;

@@ -21,10 +21,13 @@ import com.example.mygotolunch.R;
 import com.example.mygotolunch.activities.adapters.WorkMatesAdapter;
 import com.example.mygotolunch.activities.api.UserHelper;
 import com.example.mygotolunch.activities.models.User;
+import com.example.mygotolunch.activities.views.WorkMatesViewHolder;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 /**
@@ -59,7 +62,7 @@ public class WorkMatesFragment extends Fragment implements WorkMatesAdapter.List
         configureRecyclerView();
 
 
-        return inflater.inflate(R.layout.fragment_work_mates, container, false);
+        return v;
     }
 
     @Override
@@ -69,12 +72,12 @@ public class WorkMatesFragment extends Fragment implements WorkMatesAdapter.List
 
     private void configureRecyclerView(){
 
-        this.mWorkMatesAdapter = new WorkMatesAdapter(
-                generateOptionsForAdapter(
-                        UserHelper.getAllUser()),
-                Glide.with(this),
-                this,
-                this.getCurrentUser().getUid());
+        this.mWorkMatesAdapter = new WorkMatesAdapter(generateOptionsForAdapter(
+                        UserHelper.getUsersCollection()),
+                        Glide.with(this),
+                                                    this,
+                                                    this.getCurrentUser().getUid());
+
         mWorkMatesAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {

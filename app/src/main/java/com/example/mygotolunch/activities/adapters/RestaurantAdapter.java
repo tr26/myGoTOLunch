@@ -1,37 +1,45 @@
 package com.example.mygotolunch.activities.adapters;
 
+
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mygotolunch.activities.models.User;
+import com.example.mygotolunch.R;
+import com.example.mygotolunch.activities.models.Restaurant;
+import com.example.mygotolunch.activities.models.Result;
 import com.example.mygotolunch.activities.views.RestaurantViewHolder;
-import com.example.mygotolunch.activities.views.WorkMatesViewHolder;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class RestaurantAdapter extends FirestoreRecyclerAdapter<User, WorkMatesViewHolder> {
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
 
+    private List<Result> listRestaurant;
 
-    /**
-     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-     * FirestoreRecyclerOptions} for configuration options.
-     *
-     * @param options
-     */
-    public RestaurantAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
-        super(options);
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull WorkMatesViewHolder workMatesViewHolder, int i, @NonNull User user) {
-
+    public RestaurantAdapter(List<Result> listRestaurant){
+        this.listRestaurant = listRestaurant;
     }
 
     @NonNull
     @Override
-    public WorkMatesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public RestaurantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_restaurant, parent, false);
+
+        RestaurantViewHolder mRestaurantViewHolder = new RestaurantViewHolder(itemView);
+
+        return mRestaurantViewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
+        holder.update(this.listRestaurant.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.listRestaurant.size();
     }
 }

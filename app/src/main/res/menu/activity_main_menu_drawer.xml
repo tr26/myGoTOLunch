@@ -3,26 +3,27 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/activity_main_drawer_news"
-            android:icon="@drawable/ic_dashboard_white_24dp"
-            android:title="Fil d'actualité" />
-    </group>
+
 
     <item android:title="Configuration">
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/activity_main_drawer_profil"
-                    android:icon="@drawable/ic_account_box_white_24dp"
-                    android:title="Profil"
+                    android:icon="@drawable/ic_local_dining_blue_24dp"
+                    android:title="YOUR LUNCH"
                     android:onClick="goToProfilActivity"/>
                 <item
                     android:id="@+id/activity_main_drawer_settings"
                     android:icon="@drawable/ic_settings_applications_white_24dp"
                     android:title="SETTINGS"
                     android:onClick="goToAddRestaurantActivity"/>
+                <item
+                    android:id="@+id/logoutBtn"
+                    android:title="LOG OUT"
+                    android:icon="@drawable/ic_settings_power_blue_24dp"
+                    android:onClick="logOutFunction"
+                    />
             </group>
         </menu>
     </item>

@@ -13,15 +13,16 @@ public class RestaurantHelper {
 
     // --- COLLECTION REFERENCE ---
 
-    public static CollectionReference getRestaurantsCollection(){
+    /*public static CollectionReference getRestaurantsCollection(){
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
     // --- CREATE ---
 
-    public static Task<Void> createRestaurant(String name, Location location, int rating, int nbLike) {
-        Restaurant restaurantToCreate = new Restaurant(name, location, rating, nbLike);
+    public static Task<Void> createRestaurant(String name, String adress, String schedule, String distance, String nbOfWorkmates, String rate, String urlPicture) {
+        Restaurant restaurantToCreate = new Restaurant(name, adress,  schedule,  distance,  nbOfWorkmates,  rate,  urlPicture);
+
         return RestaurantHelper.getRestaurantsCollection().document(name).set(restaurantToCreate);
-    }
+    }*/
 
 }

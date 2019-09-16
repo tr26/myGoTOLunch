@@ -16,8 +16,8 @@ public class UserHelper {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
     //CREATE
-    public static Task<Void> createUser(String uid, String username, String urlPicture){
-        User userToCreate = new User(uid, username, urlPicture);
+    public static Task<Void> createUser(String uid, String username, String urlPicture, String idRestaurant){
+        User userToCreate = new User(uid, username, urlPicture, idRestaurant);
         return UserHelper.getUsersCollection().document(uid).set(userToCreate);
     }
 
@@ -29,7 +29,11 @@ public class UserHelper {
     }
 
     public static Task<Void> updateHasMadeHisChoice(String uid, Boolean hasMadeHisChoice) {
-        return UserHelper.getUsersCollection().document(uid).update("hasMAdeHisChoice", hasMadeHisChoice);
+        return UserHelper.getUsersCollection().document(uid).update("hasMadeHisChoice", hasMadeHisChoice);
+    }
+
+    public static Task<Void> updateRestaurantChoosen(String uid, String restaurantId) {
+        return UserHelper.getUsersCollection().document(uid).update("idRestaurantChoosen", restaurantId);
     }
     // --- DELETE ---
 

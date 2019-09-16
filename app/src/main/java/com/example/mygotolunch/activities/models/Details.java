@@ -4,21 +4,17 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Restaurant {
+public class Details {
 
     @SerializedName("html_attributions")
     @Expose
     private List<Object> htmlAttributions = null;
-    @SerializedName("results")
-    @Expose
-    private List<Result> results = null;
-    @SerializedName("status")
-    @Expose
-    private String status;
-
     @SerializedName("result")
     @Expose
     private Result result;
+    @SerializedName("status")
+    @Expose
+    private String status;
 
     public List<Object> getHtmlAttributions() {
         return htmlAttributions;
@@ -26,22 +22,6 @@ public class Restaurant {
 
     public void setHtmlAttributions(List<Object> htmlAttributions) {
         this.htmlAttributions = htmlAttributions;
-    }
-
-    public List<Result> getResults() {
-        return results;
-    }
-
-    public void setResults(List<Result> results) {
-        this.results = results;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Result getResult() {
@@ -52,6 +32,12 @@ public class Restaurant {
         this.result = result;
     }
 
+    public String getStatus() {
+        return status;
+    }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 }

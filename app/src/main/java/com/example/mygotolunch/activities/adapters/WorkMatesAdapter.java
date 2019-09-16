@@ -32,17 +32,16 @@ public class WorkMatesAdapter extends FirestoreRecyclerAdapter<User, WorkMatesVi
      * @param options
      */
     public WorkMatesAdapter(@NonNull FirestoreRecyclerOptions<User> options, RequestManager glide, Listener callback, String idCurrentUser) {
-            super(options);
-            this.glide = glide;
-            this.idCurrentUser = idCurrentUser;
-            this.callback = callback;
+        super(options);
+        this.glide = glide;
+        this.idCurrentUser = idCurrentUser;
+        this.callback = callback;
 
     }
 
     @Override
     protected void onBindViewHolder(@NonNull WorkMatesViewHolder workMatesViewHolder, int i, @NonNull User user) {
-
-
+        workMatesViewHolder.updateLayout1(user, glide);
     }
 
     @NonNull

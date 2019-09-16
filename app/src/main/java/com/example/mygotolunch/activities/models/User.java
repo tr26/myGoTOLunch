@@ -10,12 +10,26 @@ public class User {
     private Boolean hasMadeHisChoice;
     @Nullable
     private String urlPicture;
+    @Nullable
+    private String idRestaurantChoosen;
 
-    public User(String uid, String username, @Nullable String urlPicture) {
+    public User(){ }
+
+    public User(String uid, String username, @Nullable String urlPicture, @Nullable String idRestaurantChoosen) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
         this.hasMadeHisChoice = false;
+        this.idRestaurantChoosen = idRestaurantChoosen;
+    }
+
+    @Nullable
+    public String getIdRestaurantChoosen() {
+        return idRestaurantChoosen;
+    }
+
+    public void setIdRestaurantChoosen(@Nullable String idRestaurantChoosen) {
+        this.idRestaurantChoosen = idRestaurantChoosen;
     }
 
     public String getUid() {

@@ -2,6 +2,7 @@ package com.example.mygotolunch.activities.fragments;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -48,7 +49,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     private static final String PERMS_COARSE = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final String PERMS_FINE = Manifest.permission.ACCESS_FINE_LOCATION;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     private static final int RC_LOCATION_PERMS = 100;
+    private boolean locationPassed;
 
     //private GoogleMap mMap;
     Location mLastLocation;
@@ -73,7 +77,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // 2 - Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
@@ -81,9 +84,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
+        locationPassed = false;
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-
         mMapView.onResume(); // needed to get the map to display immediately
 
         try {
@@ -91,62 +94,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         mMapView.getMapAsync(this);
 
+
         return rootView;
-    }
-
-    /*@Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-
-
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-
-                // For showing a move to my location button
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("position", mMap.toString());
-                    googleMap.setMyLocationEnabled(true);
-                } else {
-                    buildGoogleApiClient();
-                    googleMap.setMyLocationEnabled(true);
-                    // Show rationale and request permission.
-                    Log.d("location", "permission denied");
-                }
-            }
-
-        });
-
-    }*/
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mLastLocation = location;
-        if (mCurrLocationMarker != null){
-            mCurrLocationMarker.remove();
-        }
-
-        //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        mCurrLocationMarker = googleMap.addMarker(markerOptions);
-
-        //move map camera
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8));
-        //stop location updates
-        if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this::onLocationChanged);
-        }
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -156,6 +107,68 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 .addApi(LocationServices.API).build();
         mGoogleApiClient.connect();
     }
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10);
+        mLocationRequest.setFastestInterval(10);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this::onLocationChanged);
+        }
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+        /*if (mCurrLocationMarker != null){
+            mCurrLocationMarker.remove();
+        }*/
+
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        //move map camera
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+            locationPassed = true;
+
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap mMap) {
+        googleMap = mMap;
+
+        // For showing a move to my location button
+        // 3 - Ask permission when accessing to this listener
+        if (!EasyPermissions.hasPermissions(this.getContext(), PERMS_FINE)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_LOCATION_PERMS, PERMS_FINE);
+            return ;
+        }
+
+        Toast.makeText(this.getContext(), "Vous avez le droit d'accéder aux images !", Toast.LENGTH_SHORT).show();
+
+
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            buildGoogleApiClient();
+            googleMap.setMyLocationEnabled(true);
+            //googleMap.moveCamera(CameraUpdateFactory.zoomBy(14));
+        } else {
+
+            ActivityCompat.requestPermissions(this.getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
+            buildGoogleApiClient();
+            googleMap.setMyLocationEnabled(true);
+            // Show rationale and request permission.
+            Log.d("location", "permission denied");
+        }
+    }
+
+
 
     @Override
     public void onResume() {
@@ -181,25 +194,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         mMapView.onLowMemory();
     }
 
-    @Override
-    public void onMapReady(GoogleMap mMap) {
-        googleMap = mMap;
 
-        // For showing a move to my location button
-
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            Log.d("position", mMap.toString());
-            googleMap.setMyLocationEnabled(true);
-        } else {
-            buildGoogleApiClient();
-            googleMap.setMyLocationEnabled(true);
-            // Show rationale and request permission.
-            Log.d("location", "permission denied");
-        }
-
-    }
 
 
 
@@ -218,16 +213,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
 
-        mLocationRequest = new LocationRequest();mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this::onLocationChanged);
-        }
-    }
 
     @Override
     public void onConnectionSuspended(int i) {
