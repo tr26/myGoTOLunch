@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "908918268511",
+    "firebase_url": "https://mygotolunch-26a39.firebaseio.com",
+    "project_id": "mygotolunch-26a39",
+    "storage_bucket": "mygotolunch-26a39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908918268511:android:e938d0037a423194",
+        "android_client_info": {
+          "package_name": "com.example.mygotolunch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908918268511-dq71mmcev7nriho3ov6imnv2b6t9oasr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mygotolunch",
+            "certificate_hash": "17d66677b2d6ca0e3a36ff0d8660e8a1737bf38d"
+          }
+        },
+        {
+          "client_id": "908918268511-8ki7jgg3hlg6qtceudek8hps8jgr8v35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu_2AjbO3vRQX6sLXc2XJFafITCc3kJXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908918268511-8ki7jgg3hlg6qtceudek8hps8jgr8v35.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

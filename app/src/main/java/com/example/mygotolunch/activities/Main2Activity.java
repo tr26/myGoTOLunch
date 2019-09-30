@@ -24,6 +24,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,12 +51,16 @@ public class Main2Activity extends BaseActivity implements NavigationView.OnNavi
     @BindView(R.id.activity_main_navigation_drawer)
     DrawerLayout mDrawerLayout;
 
-    //TextView mTextView2MainNav;
-    //TextView mTextView1MainNav;
-   // ImageView mImageViewMainNav;
+    //NavigationView navigationView = (NavigationView) findViewById(R.id.activity_main_navView);
 
-    @BindView(R.id.activity_main_navView)
+
+    TextView mTextView2MainNav;
+    TextView mTextView1MainNav;
+    ImageView mImageViewMainNav;
+
+    //@BindView(R.id.activity_main_navView)
     NavigationView mNavigationView;
+
     @BindView(R.id.viewPagerActivityMain)
     ViewPager mViewPager;
 
@@ -86,11 +91,6 @@ public class Main2Activity extends BaseActivity implements NavigationView.OnNavi
         super.onCreate(savedInstanceState);
         this.mSearchBtn = (Button) findViewById(R.id.search) ;
 
-
-       // mImageViewMainNav = findViewById(R.id.imageViewMainNav);
-      //  mTextView1MainNav = findViewById(R.id.textView1MainNav);
-       // mTextView2MainNav = findViewById(R.id.textView2MainNav);
-
         setSupportActionBar(mToolbar);
         this.configureDrawerLayout();
         this.configureNavigationView();
@@ -115,21 +115,17 @@ public class Main2Activity extends BaseActivity implements NavigationView.OnNavi
 
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
-
             }
-
             @Override
             public void onProviderEnabled(String s) {
-
             }
-
             @Override
             public void onProviderDisabled(String s) {
-
             }
 
-
         };
+
+
 
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
@@ -137,7 +133,6 @@ public class Main2Activity extends BaseActivity implements NavigationView.OnNavi
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else{
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
         }
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -157,13 +152,29 @@ public class Main2Activity extends BaseActivity implements NavigationView.OnNavi
 
     //2-DrawerLayout
     private void configureDrawerLayout(){
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.syncState();
 
     }
     //3-Configure NavigationView
     private void configureNavigationView(){
+        mNavigationView = findViewById(R.id.activity_main_navView);
+
+        View headerView = mNavigationView.getHeaderView(0);
+
+        mTextView1MainNav = headerView.findViewById(R.id.textView1MainNav);
+        mTextView2MainNav = headerView.findViewById(R.id.textView2MainNav);
+        mImageViewMainNav = headerView.findViewById(R.id.imageViewMainNav);
+
+        mTextView1MainNav.setText(this.getCurrentUser().getDisplayName());
+        mTextView2MainNav.setText(this.getCurrentUser().getEmail());
+        if (this.getCurrentUser().getPhotoUrl() != null) {
+            Glide.with(headerView).load(this.getCurrentUser().getPhotoUrl()).apply(RequestOptions.circleCropTransform()).into(mImageViewMainNav);
+        } else {
+            this.mImageViewMainNav.setImageResource(R.drawable.ic_anon_user_48dp);
+
+        }
+
         mNavigationView.setNavigationItemSelectedListener(this);
 
     }

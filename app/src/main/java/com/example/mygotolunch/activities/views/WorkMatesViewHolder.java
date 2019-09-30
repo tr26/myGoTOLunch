@@ -55,7 +55,7 @@ public class WorkMatesViewHolder extends RecyclerView.ViewHolder {
         if (this.itemView.getContext() instanceof AddRestoActivity ){
             Boolean isThisRestaurantChoosen;
 
-            Log.d("toto", user.getIdRestaurantChoosen());
+            Log.d("toto", "toto");
 
             this.mTextViewWorkMate.setText(
                     (user.getIdRestaurantChoosen() == "49bbf3b738766e104b0e14dd403b840b957573c8") ?

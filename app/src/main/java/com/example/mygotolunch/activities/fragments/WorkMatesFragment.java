@@ -75,8 +75,8 @@ public class WorkMatesFragment extends Fragment implements WorkMatesAdapter.List
         this.mWorkMatesAdapter = new WorkMatesAdapter(generateOptionsForAdapter(
                         UserHelper.getUsersCollection()),
                         Glide.with(this),
-                                                    this,
-                                                    this.getCurrentUser().getUid());
+                this,
+                        this.getCurrentUser().getUid());
 
         mWorkMatesAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
